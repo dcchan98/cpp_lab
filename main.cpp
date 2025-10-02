@@ -24,7 +24,15 @@ template<typename T> using pq = std::priority_queue<T>;
 template<typename T> using pqg = std::priority_queue<T, std::vector<T>, std::greater<T>>;
 //#endregion
 
+//#region template specialisation
+// vector
+template<typename T>
+struct is_vector : std::false_type {};
+template<typename T>
+struct is_vector<std::vector<T>> : std::true_type {};
+//#endregion
 //#region print
+
 /**
  * @brief Recursively prints vectors in a readable format.
  *
@@ -32,7 +40,7 @@ template<typename T> using pqg = std::priority_queue<T, std::vector<T>, std::gre
  * - 4D vectors: prints each 2D slice with "Matrix" labels for nested matrices
  *
  * @tparam T Type of vector elements (can be nested vectors)
- * @param v The vector to print
+ * @param x The vector to print
  *
  * @code
  * // 1D example
@@ -61,22 +69,24 @@ template<typename T> using pqg = std::priority_queue<T, std::vector<T>, std::gre
  * @endcode
  */
 template<typename T>
-void print(const vec<T>& v) {
-    int n = v.size();
-    cout << "[";
-
-    for (int i = 0; i < n; ++i) {
-        cout << v[i] ;
-        if (i!=n-1) cout << ", ";
+void print(T x) {
+    if constexpr (is_vector<T>::value) {
+        int n = x.size();
+        cout << "[";
+        for (int i = 0; i < n; ++i) {
+            print(x[i]);
+            if (i!=n-1) cout << ", ";
+        }
+        cout << "]";
+    } else {
+       cout << x ;
     }
-    cout << "]";
 }
 //#endregion
 
 
 int main() {
-    vec<int> dp(5,-2) ;
+    vec<vec<int>> dp(4,vec(5,-1));
     print(dp);
-    vec<vec<int>> dp2d(5,vec(5,-1)) ;
-    //print(dp2d);
+    print(1);
 }
