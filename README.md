@@ -2,6 +2,29 @@
 
 - Custom python print like function for stl 
 
+# To Implement print
+- Sequence Containers
+  ~~- vector~~
+  ~~- deque~~
+
+- Associative Containers
+  - set
+  - multiset
+  - map
+  - multimap
+  
+- Unordered Associative Containers
+    - unordered_set
+    - unordered_multiset
+    - unordered_map
+    - unordered_multimap
+    
+- Container adaptors
+  - Priority queue
+  
+- Tuple 
+  
+
 ## Why this print function?
 
 ### For vectors
