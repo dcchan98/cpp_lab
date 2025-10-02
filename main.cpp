@@ -1,4 +1,6 @@
 #include <bits/stdc++.h>
+
+#include <utility>
 using namespace std;
 
 //#region using shortcuts
@@ -25,13 +27,56 @@ template<typename T> using pqg = std::priority_queue<T, std::vector<T>, std::gre
 //#endregion
 
 //#region template specialisation
+template<typename T, typename = void>
+struct is_streamable : std::false_type {};
+
+template<typename T>
+struct is_streamable<T, std::void_t<decltype(std::declval<std::ostream&>() << std::declval<T>())>>
+    : std::true_type {};
+
 // vector
+// Trait to get vector "depth"
 template<typename T>
-struct is_vector : std::false_type {};
+struct vector_depth : std::integral_constant<int, 0> {};
 template<typename T>
-struct is_vector<std::vector<T>> : std::true_type {};
+struct vector_depth<std::vector<T>>
+    : std::integral_constant<int, 1 + vector_depth<T>::value> {};
 //#endregion
+
 //#region print
+
+template<typename T>
+void print_recurse(T x) {
+    // Base case: T can be printed directly
+    if constexpr (is_streamable<T>::value) {
+        cout << x;
+        return;
+    }
+    // Vector case
+    if constexpr (vector_depth<T>::value) {
+        if constexpr (vector_depth<T>::value==1) {
+            const int n = x.size();
+            cout << "[";
+            for (int i = 0; i < n; ++i) {
+                print_recurse(x[i]);
+                if (i!=n-1) cout << ", ";
+            }
+            cout << "]";
+        }else if constexpr (vector_depth<T>::value==2) {
+            const int n = x.size();
+            cout << "[" << endl;
+            for (int i = 0; i < n; ++i) {
+                cout << "  ";
+                print_recurse(x[i]);
+                if (i!=n-1) cout <<   endl;
+            }
+            cout <<endl<< "]";
+        }
+        else {
+            // TODO handle matrix printing
+        }
+    }
+}
 
 /**
  * @brief Recursively prints vectors in a readable format.
@@ -68,25 +113,17 @@ struct is_vector<std::vector<T>> : std::true_type {};
  * [[13, 14], [15, 16]]
  * @endcode
  */
+//#endregion
 template<typename T>
 void print(T x) {
-    if constexpr (is_vector<T>::value) {
-        int n = x.size();
-        cout << "[";
-        for (int i = 0; i < n; ++i) {
-            print(x[i]);
-            if (i!=n-1) cout << ", ";
-        }
-        cout << "]";
-    } else {
-       cout << x ;
-    }
+    print_recurse(std::move(x));
+    cout << endl;
 }
-//#endregion
-
 
 int main() {
+    vec dp1(4,-1);
     vec<vec<int>> dp(4,vec(5,-1));
+    print(dp1  );
     print(dp);
     print(1);
 }
