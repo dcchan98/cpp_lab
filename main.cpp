@@ -1,74 +1,54 @@
 #include <bits/stdc++.h>
 
-#include <utility>
-using namespace std;
-
-//#region using shortcuts
+//#region type aliases in main
 /// Usage: pr<int,int> p = {1,2};
-template<typename T1, typename T2>
-using pr = std::pair<T1, T2>;
-/// Usage: tpl<int,int,int> t = {1,2,3};
-template<typename T1, typename T2, typename T3>
-using tpl = std::tuple<T1, T2, T3>;
-/// Usage: vec<int> v(n,-1); vec<vec<int>> dp(m,vec(n,-1));
-template<typename T>
-using vec = std::vector<T>;
-/// Usage: dq<int> d; d.push_back(5); d.push_front(1);
-template<typename T>
-using dq = std::deque<T>;
-/// Usage: umap<int,int> m; m[1]=10;
-template<typename K, typename V>
-using umap = std::unordered_map<K, V>;
-/// Usage: pq<int> pq; pq.push(10);
-template<typename T>
-using pq = std::priority_queue<T>;
-/// Usage: pqg<int> pq; pq.push(10);
-template<typename T>
-using pqg = std::priority_queue<T, std::vector<T>, std::greater<T> >;
-//#endregion
+namespace trait_templates {
+    namespace basic_type_traits {
+        // check if  cout << t is valid
+        template<typename T, typename = void>
+        struct is_streamable : std::false_type {};
 
-//#region template trait specialisation
-template<typename T, typename = void>
-struct is_streamable : std::false_type {
-};
+        template<typename T>
+        struct is_streamable<
+            T,
+            std::void_t<decltype(std::declval<std::ostream &>() << std::declval<T>())>
+        > : std::true_type {};
+    }
+    namespace sequence_type_traits {
+        template<typename T>
+        struct is_sequence_container : std::false_type {};
 
-template<typename T>
-struct is_streamable<T, std::void_t<decltype(std::declval<std::ostream &>() << std::declval<T>())> >
-        : std::true_type {
-};
+        template<typename T, typename Alloc>
+        struct is_sequence_container<std::vector<T, Alloc>> : std::true_type {};
 
-// detect sequences and get sequence depth
-template<typename T>
-struct is_sequence_container : std::false_type {};
+        template<typename T, typename Alloc>
+        struct is_sequence_container<std::deque<T, Alloc>> : std::true_type {};
 
-template<typename T, typename Alloc>
-struct is_sequence_container<std::vector<T, Alloc>> : std::true_type {};
+        template<typename T, std::size_t N>
+        struct is_sequence_container<std::array<T, N>> : std::true_type {};
 
-template<typename T, typename Alloc>
-struct is_sequence_container<std::deque<T, Alloc>> : std::true_type {};
+        template<typename T, typename Enable = void>
+        struct sequence_depth : std::integral_constant<int, 0> {};
 
-template<typename T, std::size_t N>
-struct is_sequence_container<std::array<T, N>> : std::true_type {};
-
-template<typename T, typename Enable = void>
-struct sequence_depth : std::integral_constant<int, 0> {};
-
-template<typename T>
-struct sequence_depth<T, std::enable_if_t<is_sequence_container<T>::value>>
-    : std::integral_constant<int, 1 + sequence_depth<typename T::value_type>::value> {};
-
-//#endregion
-
-//#region print
-
+        template<typename T>
+        struct sequence_depth<
+            T,
+            std::enable_if_t<is_sequence_container<T>::value>
+        > : std::integral_constant<int, 1 + sequence_depth<typename T::value_type>::value> {};
+    }
+}
 template<typename T>
 void print_recurse(T x, const std::vector<int>& indices = {}) {
+    using namespace std;
+    using namespace trait_templates::basic_type_traits;
+    using namespace trait_templates::sequence_type_traits;
     // Base case: T can be printed directly
     if constexpr (is_streamable<T>::value) {
-        cout << x;
+        std::cout << x;
         return;
     }
-    // Vector case
+
+    // Sequence container case
     if constexpr (sequence_depth<T>::value) {
         if constexpr (sequence_depth<T>::value == 1) {
             const int n = x.size();
@@ -95,9 +75,9 @@ void print_recurse(T x, const std::vector<int>& indices = {}) {
         } else {
             const int n = x.size();
             for (int i = 0; i < n; i++) {
-                std::vector<int> newIndice = indices;
-                newIndice.push_back(i);
-                print_recurse(x[i], newIndice);
+                std::vector<int> newIndices = indices;
+                newIndices.push_back(i);
+                print_recurse(x[i], newIndices);
             }
         }
     }
@@ -110,6 +90,40 @@ print_recurse(x); \
 cout << endl;
 
 
+namespace std_aliases {
+    // Pair shortcut
+    template<typename T1, typename T2>
+    using pr = std::pair<T1, T2>;
+
+    // Tuple shortcut
+    template<typename T1, typename T2, typename T3>
+    using tpl = std::tuple<T1, T2, T3>;
+
+    // Vector shortcut
+    template<typename T>
+    using vec = std::vector<T>;
+
+    // Deque shortcut
+    template<typename T>
+    using dq = std::deque<T>;
+
+    // Unordered map shortcut
+    template<typename K, typename V>
+    using umap = std::unordered_map<K, V>;
+
+    // Priority queue shortcut (max-heap)
+    template<typename T>
+    using pq = std::priority_queue<T>;
+
+    // Priority queue shortcut (min-heap)
+    template<typename T>
+    using pqg = std::priority_queue<T, std::vector<T>, std::greater<T>>;
+}
+
+using namespace std_aliases;
+
+#include <bits/stdc++.h>
+using namespace std;
 int main() {
     // 4D vector
     vec<vec<vec<vec<int>>>> dp4d(2, vec<vec<vec<int>>>(3, vec<vec<int>>(4, vec<int>(5))));
