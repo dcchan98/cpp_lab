@@ -1,6 +1,6 @@
 # C++ Lab
 
-A personal C++ template and playground for competitive programming, algorithm exploration, and preparing for quantitative/low-latency practice.
+A personal C++ template and playground for competitive programming, algorithm exploration, and quantitative/low-latency practice.
 
 ## Features
 
