@@ -1,0 +1,17 @@
+# Object files and compiled binaries
+*.o
+*.obj
+*.so
+*.a
+*.dll
+
+# CMake build folders
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# CLion files
+.idea/
+*.iml
