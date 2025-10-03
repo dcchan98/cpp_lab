@@ -28,15 +28,14 @@ using namespace std_aliases;
 using namespace std;
 
 int main() {
-    std::priority_queue<int> pq;
-
+    pqg<int> pq;
     // Push some elements
     pq.push(5);
     pq.push(1);
     pq.push(8);
     pq.push(3);
-
     // Print using your print function
+    print(pq);
     print(pq);
 
     return 0;

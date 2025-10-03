@@ -43,14 +43,16 @@ namespace print_concepts {
     };
 
     template<typename T>
-    concept PriorityQueueContainer = requires(T a)
+    concept Adaptor = requires(T a)
     {
-        typename T::value_type;  // must have value_type
-        { a.push(a.top()) };     // must support push/top/pop
-        { a.pop() };
+        typename T::value_type;     // must have value_type
         { a.size() } -> std::convertible_to<std::size_t>;
-        { a.top() } -> std::convertible_to<typename T::value_type>;
-    };
+        { a.empty() } -> std::convertible_to<bool>;
+        { a.pop() };                // must support pop()
+    } && (
+        requires(T a) { a.top(); } ||  // stack / priority_queue
+        requires(T a) { a.front(); }   // queue
+    );
 }
 
 template<typename T>
@@ -102,6 +104,16 @@ void print_recursively(const T &x, int indent = 0) {
             cout << endl;
         }
         cout << "]";
+    }
+    else if constexpr (Adaptor<T>) {
+        T copy = x;
+        std::cout << string(indent, ' ') << "priority_queue#[ ";
+        while (!copy.empty()) {
+            print_recursively(copy.top(), indent + 2);
+            copy.pop();
+            if (!copy.empty()) std::cout << ", ";
+        }
+        std::cout << " ]";
     }
     else {
         std::cout << "Unstreamable";
