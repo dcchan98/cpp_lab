@@ -14,6 +14,9 @@ namespace type_aliases {
     /// Unordered map shortcut. Usage: umap<int,string> m = {{1,"a"},{2,"b"}};
     template<typename K, typename V>
     using umap = std::unordered_map<K, V>;
+    /// Unordered set shortcut. Usage: uset<int> s = {1,2};
+    template<typename T>
+    using uset = std::unordered_set<T>;
     /// Max-heap priority queue. Usage: pq<int> pq; pq.push(5);
     template<typename T>
     using pq = std::priority_queue<T>;
@@ -29,5 +32,12 @@ using namespace std;
 // Modify code below
 
 int main() {
-
+    /// useful syntax for recursive lambdas
+    auto fib = [&](this auto func, int n) -> int {
+        if (n==1) {return 0;}
+        if (n==2) {return 1;}
+        return func(n-1)+func(n-2);
+    };
+    print(fib(20));
+    return 0;
 }
