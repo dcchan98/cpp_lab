@@ -21,22 +21,13 @@ namespace std_aliases {
     template<typename T>
     using pqg = std::priority_queue<T, std::vector<T>, std::greater<T> >;
 }
-
 using namespace std_aliases;
 
 #include <bits/stdc++.h>
 using namespace std;
 
-int main() {
-    pqg<int> pq;
-    // Push some elements
-    pq.push(5);
-    pq.push(1);
-    pq.push(8);
-    pq.push(3);
-    // Print using your print function
-    print(pq);
-    print(pq);
+// Modify code below
 
-    return 0;
+int main() {
+
 }
