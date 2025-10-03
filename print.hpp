@@ -19,6 +19,9 @@ namespace print_concepts {
     {
         typename T::value_type::first_type;
         typename T::value_type::second_type;
+        { a.size() } -> std::convertible_to<std::size_t>;
+        { a.begin() };
+        { a.end() };
     };
 
     template<typename T>
@@ -38,7 +41,17 @@ namespace print_concepts {
         { a.begin() };
         { a.end() };
     };
-} // namespace print_concepts
+
+    template<typename T>
+    concept PriorityQueueContainer = requires(T a)
+    {
+        typename T::value_type;  // must have value_type
+        { a.push(a.top()) };     // must support push/top/pop
+        { a.pop() };
+        { a.size() } -> std::convertible_to<std::size_t>;
+        { a.top() } -> std::convertible_to<typename T::value_type>;
+    };
+}
 
 template<typename T>
 void print_recursively(const T &x, int indent = 0) {
@@ -47,6 +60,7 @@ void print_recursively(const T &x, int indent = 0) {
     if constexpr (Streamable<T>) {
         cout << x;
     }
+    // TODO improve indentation if tuple contains containers or maps
     else if constexpr (TupleLike<T>) {
         cout << "(";
         std::apply(

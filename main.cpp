@@ -28,15 +28,16 @@ using namespace std_aliases;
 using namespace std;
 
 int main() {
-    using mp  = std::map<std::string, int>;
-    using vec = std::vector<mp>;
+    std::priority_queue<int> pq;
 
-    vec vecOfMaps;
+    // Push some elements
+    pq.push(5);
+    pq.push(1);
+    pq.push(8);
+    pq.push(3);
 
-    // Add some maps
-    vecOfMaps.push_back({{"a", 1}, {"b", 2}});
-    vecOfMaps.push_back({{"x", 10}, {"y", 20}});
-    vecOfMaps.push_back({{"foo", 100}, {"bar", 200}});
+    // Print using your print function
+    print(pq);
 
-    print(vecOfMaps);
+    return 0;
 }
