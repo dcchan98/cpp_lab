@@ -28,28 +28,15 @@ using namespace std_aliases;
 using namespace std;
 
 int main() {
-    std::vector<int> v{1,2,3};
-    std::vector<std::vector<int>> vv(3, std::vector<int>(3, -1));
-    std::set<int> s{3,1,2};
-    std::unordered_set<std::string> us{"apple","banana"};
-    std::map<int,std::string> m{{1,"one"}, {2,"two"}};
-    std::map<int,std::string> umap{{1,"one"}, {2,"two"}};
-    std::pair<int,double> p{42, 3.14};
-    std::tuple<int,std::string,double> t{1,"hello",2.5};
+    using mp  = std::map<std::string, int>;
+    using vec = std::vector<mp>;
 
-    print(v);
-    print(vv);
-    print(s);
-    print(us);
-    print(m);
-    print(p);
-    print(t);
+    vec vecOfMaps;
 
+    // Add some maps
+    vecOfMaps.push_back({{"a", 1}, {"b", 2}});
+    vecOfMaps.push_back({{"x", 10}, {"y", 20}});
+    vecOfMaps.push_back({{"foo", 100}, {"bar", 200}});
 
-    map<tpl<int,int,int>, vec<int>> mm;
-    // Insert some values
-    mm[tpl{1,2,3}] = {10, 20, 30};
-    mm[tpl{4,5,6}] = {40, 50};
-
-    print(mm);
+    print(vecOfMaps);
 }
