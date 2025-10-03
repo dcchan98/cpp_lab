@@ -45,4 +45,11 @@ int main() {
     print(p);
     print(t);
 
+
+    map<tpl<int,int,int>, vec<int>> mm;
+    // Insert some values
+    mm[tpl{1,2,3}] = {10, 20, 30};
+    mm[tpl{4,5,6}] = {40, 50};
+
+    print(mm);
 }

@@ -36,7 +36,7 @@ namespace print_concepts {
 
 
 template<typename T>
-void print_recursively(const T &x) {
+void print_recursively(const T &x,int indent = 0) {
     using namespace std;
     using namespace print_concepts;
     if constexpr (Streamable<T>) {
@@ -51,12 +51,15 @@ void print_recursively(const T &x) {
         cout << ")";
     }
     else if constexpr (MapContainer<T>) {
-        cout << "{ ";
+        std::cout << "{" << std::endl;
         for (auto it = x.begin(); it != x.end(); ++it) {
-            print_recursively(*it);
-            cout << " ";
+            cout << string(indent+2,' ');
+            print_recursively(it->first, indent + 2);
+            std::cout << ": ";
+            print_recursively(it->second, indent + 2);
+            std::cout << std::endl;
         }
-        cout << " }";
+        std::cout << "}";
     } else if constexpr (Container<T>) {
         cout << "[ ";
         for (auto it = x.begin(); it != x.end(); ++it) {
