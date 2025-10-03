@@ -1,7 +1,7 @@
 #include "m_print.hpp"
 #include "print.hpp"
 
-namespace std_aliases {
+namespace type_aliases {
     /// Tuple shortcut. Usage: tpl<int,int,int> t = {1,2,3};
     template<typename T1, typename T2, typename T3>
     using tpl = std::tuple<T1, T2, T3>;
@@ -21,7 +21,7 @@ namespace std_aliases {
     template<typename T>
     using pqg = std::priority_queue<T, std::vector<T>, std::greater<T> >;
 }
-using namespace std_aliases;
+using namespace type_aliases;
 
 #include <bits/stdc++.h>
 using namespace std;
