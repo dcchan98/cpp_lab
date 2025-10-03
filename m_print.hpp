@@ -1,7 +1,7 @@
 #pragma once
 #include <bits/stdc++.h>
 
-namespace trait_templates {
+namespace m_print_trait_templates {
     namespace basic_type_traits {
         template<typename T, typename = void>
         struct is_streamable : std::false_type {};
@@ -38,8 +38,8 @@ namespace trait_templates {
 template<typename T>
 void m_print_recurse(T x, const std::vector<int>& indices = {}) {
     using namespace std;
-    using namespace trait_templates::basic_type_traits;
-    using namespace trait_templates::sequence_type_traits;
+    using namespace m_print_trait_templates::basic_type_traits;
+    using namespace m_print_trait_templates::sequence_type_traits;
 
     if constexpr (is_streamable<T>::value) {
         std::cout << x;

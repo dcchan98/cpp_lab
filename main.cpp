@@ -1,9 +1,7 @@
 #include "m_print.hpp"
+#include "print.hpp"
 
 namespace std_aliases {
-    /// Pair shortcut. Usage: pr<int,int> p = {1,2};
-    template<typename T1, typename T2>
-    using pr = std::pair<T1, T2>;
     /// Tuple shortcut. Usage: tpl<int,int,int> t = {1,2,3};
     template<typename T1, typename T2, typename T3>
     using tpl = std::tuple<T1, T2, T3>;
@@ -30,20 +28,21 @@ using namespace std_aliases;
 using namespace std;
 
 int main() {
-    // 4D vector
-    vec<vec<vec<vec<int> > > > dp4d(2, vec<vec<vec<int> > >(3, vec<vec<int> >(4, vec<int>(5))));
-    int counter = 1;
-    for (int a = 0; a < 2; ++a)
-        for (int b = 0; b < 3; ++b)
-            for (int c = 0; c < 4; ++c)
-                for (int d = 0; d < 5; ++d)
-                    dp4d[a][b][c][d] = counter++;
-    m_print(dp4d);
-    // 1D deque
-    // 2D list
-    dq<vec<int> > l2 = {{1, 2}, {3, 4}, {5, 6}};
-    m_print(l2);
+    std::vector<int> v{1,2,3};
+    std::vector<std::vector<int>> vv(3, std::vector<int>(3, -1));
+    std::set<int> s{3,1,2};
+    std::unordered_set<std::string> us{"apple","banana"};
+    std::map<int,std::string> m{{1,"one"}, {2,"two"}};
+    std::map<int,std::string> umap{{1,"one"}, {2,"two"}};
+    std::pair<int,double> p{42, 3.14};
+    std::tuple<int,std::string,double> t{1,"hello",2.5};
 
-    int m = 1, n = 2;
-    vec<vec<int> > dp(m, vec<int>(n, -1));
+    print(v);
+    print(vv);
+    print(s);
+    print(us);
+    print(m);
+    print(p);
+    print(t);
+
 }
