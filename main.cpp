@@ -29,6 +29,7 @@ using namespace type_aliases;
 #include <bits/stdc++.h>
 using namespace std;
 
+const vec<pair<int,int>> DIR  = {{1,0},{-1,0},{0,1},{0,-1}};
 // Modify code below
 
 int main() {
