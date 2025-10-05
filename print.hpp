@@ -31,7 +31,7 @@ namespace print_concepts {
         { a.size() } -> std::convertible_to<std::size_t>;
         { a.begin() };
         { a.end() };
-    } && (!requires { typename T::value_type::value_type; });
+    } && (Streamable<typename T::value_type>);
 
     template<typename T>
     concept Container = requires(T a)
