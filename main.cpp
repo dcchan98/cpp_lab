@@ -24,31 +24,31 @@ namespace type_aliases {
     template<typename T>
     using pqg = std::priority_queue<T, std::vector<T>, std::greater<T> >;
 }
+
 using namespace type_aliases;
 
 #include <bits/stdc++.h>
 using namespace std;
 
-const vec<pair<int,int>> DIR  = {{1,0},{-1,0},{0,1},{0,-1}};
+const vec<pair<int, int> > DIR = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
 // Util funcs
 
 // TODO change int to template
 
 /// generates powerset
-vector<vector<int>> combinations(vector<int> vec) {
+vector<vector<int> > combinations(vector<int> vec) {
     int n = vec.size();
     ranges::sort(vec);
     // recursively modified states
-    vector<vector<int>> res;
+    vector<vector<int> > res;
     vector<int> taken;
-    auto recurse = [&](this auto func,int startIndex=0)->void {
+    auto recurse = [&](this auto func, int startIndex = 0)-> void {
         res.push_back(taken);
-        for (int i = startIndex ; i < n; i ++) {
-            // prune for unique elements
-            if (i>startIndex && vec[i]==vec[i-1]) continue;
+        for (int i = startIndex; i < n; i++) {
+            if (i > startIndex && vec[i] == vec[i - 1]) continue; // prune for unique elements
             taken.push_back(vec[i]);
-            func(i+1);
+            func(i + 1); // populate next element recursively, limited by index
             taken.pop_back();
         }
     };
@@ -56,23 +56,48 @@ vector<vector<int>> combinations(vector<int> vec) {
     return res;
 }
 
-// TODO implement permutations for unique vec
+/// generate permutations
+vector<vector<int> > permutations(vector<int> vec) {
+    int n = vec.size();
+    ranges::sort(vec);
+    // recursively modified states
+    vector<int> visited(n); // marks if index has been visited
+    vector<vector<int> > res;
+    vector<int> taken;
+    auto recurse = [&](this auto func)-> void {
+        if (taken.size() == n) {
+            res.push_back(taken);
+            return;
+        };
+        for (int i = 0; i < n; i++) {
+            if (visited[i]) continue;
+            if (i> 0 && vec[i]==vec[i-1] && !visited[i-1]) continue; // prune for unique elements
+            visited[i] = true;
+            taken.push_back(vec[i]);
+            func(); // populate next element recursively
+            visited[i] = false;
+            taken.pop_back();
+        }
+    };
+    recurse();
+    return res;
+}
 
 // Modify code below
 int main() {
     // useful syntax for recursive lambdas
     auto fib = [&](this auto func, int n) -> int {
-        if (n==1) {return 0;}
-        if (n==2) {return 1;}
-        return func(n-1)+func(n-2);
+        if (n == 1) { return 0; }
+        if (n == 2) { return 1; }
+        return func(n - 1) + func(n - 2);
     };
     print(fib(5));
 
     // Flatten 2d vector to 1d -> use formula i*n+j for access
-    int m = 5,  n = 6, i = 2, j = 3;
-    vector<int> dp1d(m*n,-INFINITY);
+    int m = 5, n = 6, i = 2, j = 3;
+    vector<int> dp1d(m * n, -INFINITY);
     print(dp1d[i*n+j]);
     // this removes the need for dp2d below
-    vector<vector<int>> dp2d(m,vector<int>(n,-INFINITY));
+    vector<vector<int> > dp2d(m, vector<int>(n, -INFINITY));
     return 0;
 }
