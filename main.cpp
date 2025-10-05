@@ -30,8 +30,35 @@ using namespace type_aliases;
 using namespace std;
 
 const vec<pair<int,int>> DIR  = {{1,0},{-1,0},{0,1},{0,-1}};
-// Modify code below
 
+// Util funcs
+
+// TODO change int to template
+
+/// generates powerset
+vector<vector<int>> combinations(vector<int> vec) {
+    int n = vec.size();
+    ranges::sort(vec);
+    // recursively modified states
+    vector<vector<int>> res;
+    vector<int> taken;
+    auto recurse = [&](this auto func,int startIndex=0)->void {
+        res.push_back(taken);
+        for (int i = startIndex ; i < n; i ++) {
+            // prune for unique elements
+            if (i>startIndex && vec[i]==vec[i-1]) continue;
+            taken.push_back(vec[i]);
+            func(i+1);
+            taken.pop_back();
+        }
+    };
+    recurse();
+    return res;
+}
+
+// TODO implement permutations for unique vec
+
+// Modify code below
 int main() {
     // useful syntax for recursive lambdas
     auto fib = [&](this auto func, int n) -> int {
