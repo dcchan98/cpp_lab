@@ -1,6 +1,6 @@
 # cpprint
 
-`cpprint` is a **header-only C++ library** that makes printing STL containers, tuples, maps, and even priority queues actually enjoyable. Think of it as Python’s `print()` for C++—but with **line numbers, variable names, and nice formatting**, so you can actually read what’s going on.
+`cpprint` is a **header-only C++ library** that makes printing STL containers, tuples, maps, and even priority queues actually enjoyable. As Python’s `print()` for C++ so you can actually read what’s going on.
 
 I made `cpprint` because I wanted to practice C++ and solve some LeetCode problems—but every time I had to print a vector, I found myself writing:
 
