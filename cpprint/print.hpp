@@ -1,11 +1,10 @@
 #pragma once
 #include "concepts.hpp"
 #include <iostream>
-#include <vector>
 #include <string>
 
 template<typename T>
-void print_recursively(const T &x, int indent = 0) {
+void generate_container_string_recursively(const T &x, int indent = 0) {
     using namespace std;
     using namespace print_concepts;
     if constexpr (Streamable<T>) {
@@ -18,7 +17,7 @@ void print_recursively(const T &x, int indent = 0) {
             [&](auto &&... args) {
                 // fold expression to print each element recursively
                 size_t n = 0;
-                ((print_recursively(args), ++n < sizeof...(args) ? cout << ", " : cout), ...);
+                ((generate_container_string_recursively(args), ++n < sizeof...(args) ? cout << ", " : cout), ...);
             },
             x);
         cout << ")";
@@ -28,9 +27,9 @@ void print_recursively(const T &x, int indent = 0) {
         std::cout << "{" << std::endl;
         for (auto it = x.begin(); it != x.end(); ++it) {
             cout << string(indent + 2, ' ');
-            print_recursively(it->first, indent + 2);
+            generate_container_string_recursively(it->first, indent + 2);
             std::cout << ": ";
-            print_recursively(it->second, indent + 2);
+            generate_container_string_recursively(it->second, indent + 2);
             std::cout << std::endl;
         }
         cout << string(indent , ' ');
@@ -40,7 +39,7 @@ void print_recursively(const T &x, int indent = 0) {
        cout << string(indent , ' ');
        cout << "[ " ;
        for (auto elem: x) {
-           print_recursively(elem);
+           generate_container_string_recursively(elem);
            cout <<" ";
        }
         cout << " ]";
@@ -49,7 +48,7 @@ void print_recursively(const T &x, int indent = 0) {
         cout << string(indent , ' ');
         cout << "[ "<<endl;
         for (auto it = x.begin(); it != x.end(); ++it) {
-            print_recursively(*it,indent+2);
+            generate_container_string_recursively(*it,indent+2);
             cout << endl;
         }
         cout << "]";
@@ -58,7 +57,7 @@ void print_recursively(const T &x, int indent = 0) {
         T copy = x;
         std::cout << string(indent, ' ') << "priority_queue#[ ";
         while (!copy.empty()) {
-            print_recursively(copy.top(), indent + 2);
+            generate_container_string_recursively(copy.top(), indent + 2);
             copy.pop();
             if (!copy.empty()) std::cout << ", ";
         }
@@ -71,5 +70,5 @@ void print_recursively(const T &x, int indent = 0) {
 
 #define cpprint(x)                                            \
     std::cout << #x << " : Line " << __LINE__ << std::endl; \
-    print_recursively(x);                                   \
+    generate_container_string_recursively(x);                                   \
     std::cout << std::endl;
