@@ -149,4 +149,10 @@ Printing nested tuple with map:
 
 ## License
 
+## Dev Notes
+When maintaining this libray, change python script below to include correct files, and regenerate the single file
+```bash
+python generate_single_header.py
+```
+
 MIT License – free to use and modify.
