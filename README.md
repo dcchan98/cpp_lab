@@ -1,7 +1,31 @@
 # cpprint
 
-`cpprint` is a **header-only C++ library** for beautiful, recursive printing of STL containers, tuples, maps, and even priority queues. Designed for **quick debugging**, it prints variables with **line numbers, variable names, and readable formatting**.
+`cpprint` is a **header-only C++ library** that makes printing STL containers, tuples, maps, and even priority queues actually enjoyable. Think of it as Python’s `print()` for C++—but with **line numbers, variable names, and nice formatting**, so you can actually read what’s going on.
 
+I made `cpprint` because I wanted to practice C++ and solve some LeetCode problems—but every time I had to print a vector, I found myself writing:
+
+```cpp
+for (int v : myVec) std::cout << v << std::endl;
+```
+
+…and then another loop for another vector, and another loop for a tuple… and before I knew it, I had completely lost my **programming flow**. It was soul-crushing. 😅
+
+`cpprint` solves this problem. Now I can just:
+
+```cpp
+std::vector<int> v = {1,2,3,4};
+cpprint::pprint(v);
+```
+
+…and instantly see the contents, beautifully formatted, without breaking my concentration.
+
+### Who is this for?
+
+1. **New programmers** – Especially if you’re coming from a type-safe language like Python, where `print()` magically prints everything. Welcome to C++… let `cpprint` be your bridge.
+2. **Competitive programmers & LeetCoders** – Fast debugging without breaking your coding flow. Save time and sanity when testing your algorithm.
+3. **C++ explorers** – If you just want to poke around in C++ without constantly writing loops for printing, this makes life a lot more convenient.
+
+In short: `cpprint` keeps you **focused, sane, and slightly happier** while you code in C++.
 ---
 
 ## Features
