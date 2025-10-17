@@ -1,146 +1,93 @@
-# C++ Lab
+# cpprint
 
-- Custom python print like function for stl 
+`cpprint` is a **header-only C++ library** for beautiful, recursive printing of STL containers, tuples, maps, and even priority queues. Designed for **quick debugging**, it prints variables with **line numbers, variable names, and readable formatting**.
 
-# To Implement print
-- Sequence Containers
-  ~~- vector~~
-  ~~- deque~~
+---
 
-- Associative Containers
-  - set
-  - multiset
-  - map
-  - multimap
-  
-- Unordered Associative Containers
-    - unordered_set
-    - unordered_multiset
-    - unordered_map
-    - unordered_multimap
-    
-- Container adaptors
-  - Priority queue
-  
-- Tuple 
-  
+## Features
 
-## Why this print function?
+- **Supported types:**
+    - `std::vector`
+    - `std::queue` / `std::priority_queue`
+    - `std::map` / `std::unordered_map`
+    - `std::set` / `std::unordered_set`
+    - `std::tuple`
+    - `std::pair
+---
 
-### For vectors
-Printing nested containers is usually messy and unreadable.  
-Humans can comfortably visualize **1D and 2D structures** (like arrays and matrices).
+## Installation
 
-- **1D vectors** → printed inline, e.g. `[1, 2, 3]`
+1. **Download the single header** from [generated/cpprint.hpp](generated/cpprint.hpp)
+2. Place it in your project folder or an `include/` directory:
 
-```cpp
-vec<int> dp1(5, 3);
-PRINT(dp1);
 ```
-**Output:**
-```
-dp1 : Line  172
-[3, 3, 3, 3, 3]
+my_project/
+├─ include/
+│  └─ cpprint.hpp
+├─ src/
+│  └─ main.cpp
 ```
 
-- **2D vectors** → printed as matrices, e.g.
-```cpp
-vec<vec<int>> dp2(3, vec<int>(4));
-fill_running_numbers(dp2);
-PRINT(dp2);
-```
-**Output:**
-```
-dp2 : Line  173
-[
-  [1, 2, 3, 4]
-  [5, 6, 7, 8]
-  [9, 10, 11, 12]
-]
-```
-
-- **3D+ vectors** → printed slice by slice with labels (`Matrix 0`, `Matrix 1`, …) so you can follow along layer by layer instead of staring at deeply nested brackets.
-
-```cpp
-vec<vec<vec<vec<int>>>> dp4d(2, vec<vec<vec<int>>>(3, vec<vec<int>>(4, vec<int>(5))));
-fill_running_numbers(dp4d);
-PRINT(dp4d);
-```
-**Output:**
-```
-dp4d : Line  170
--- Matrix [0, 0] --
-[
-  [1, 2, 3, 4, 5]
-  [6, 7, 8, 9, 10]
-  [11, 12, 13, 14, 15]
-  [16, 17, 18, 19, 20]
-]
--- Matrix [0, 1] --
-[
-  [21, 22, 23, 24, 25]
-  [26, 27, 28, 29, 30]
-  [31, 32, 33, 34, 35]
-  [36, 37, 38, 39, 40]
-]
--- Matrix [0, 2] --
-[
-  [41, 42, 43, 44, 45]
-  [46, 47, 48, 49, 50]
-  [51, 52, 53, 54, 55]
-  [56, 57, 58, 59, 60]
-]
--- Matrix [1, 0] --
-[
-  [61, 62, 63, 64, 65]
-  [66, 67, 68, 69, 70]
-  [71, 72, 73, 74, 75]
-  [76, 77, 78, 79, 80]
-]
--- Matrix [1, 1] --
-[
-  [81, 82, 83, 84, 85]
-  [86, 87, 88, 89, 90]
-  [91, 92, 93, 94, 95]
-  [96, 97, 98, 99, 100]
-]
--- Matrix [1, 2] --
-[
-  [101, 102, 103, 104, 105]
-  [106, 107, 108, 109, 110]
-  [111, 112, 113, 114, 115]
-  [116, 117, 118, 119, 120]
-]
-```
-### other containers 
-not yet implemented
-
-## Compile and Run
-
-```bash
-g++-15 -std=c++23 -O2 -g -o build/main main.cpp
-./build/main
-```
-
-- `-std=c++23` : Use the latest C++ standard
-- `-O2` : Optimization for speed
-- `-g` : Include debug symbols for debugging
+---
 
 ## Usage
 
-1. Clone the repository:
+```cpp
+#include "cpprint.hpp"
+#include <vector>
+#include <tuple>
+#include <queue>
+#include <map>
 
-```bash
-git clone <your-repo-url>
-cd cpp-lab
+int main() {
+    std::vector<int> v = {1, 2, 3};
+    print(v);  // prints variable name, line number, and contents
+
+    std::tuple<int, std::vector<int>> t = {5, {1,2,3}};
+    print(t);
+
+    std::map<int, std::string> m = {{1,"a"}, {2,"b"}};
+    print(m);
+
+    std::priority_queue<int> pq;
+    pq.push(1); pq.push(3); pq.push(2);
+    print(pq);
+}
 ```
 
-2. Edit `main.cpp` or add new files for testing algorithms.
-3. Compile and run as shown above.
+**Sample Output:**
+
+```
+Line 12 : v ===
+[ 1 2 3 ]
+=========================
+Line 15 : t ===
+(5, [ 1 2 3 ])
+=========================
+Line 18 : m ===
+{
+  1: a
+  2: b
+}
+=========================
+Line 21 : pq ===
+priority_queue#[ 3, 2, 1 ]
+=========================
+```
+
+---
+
+## Requirements
+
+- **C++20** (concepts are used)
 
 ## Notes
 
-- This repository is meant for **C++ experimentation**.
-- Not intended as a production library.
+- This is a **header-only library**. No `.cpp` compilation is needed.
+- Designed for **debugging and logging**, not optimized for production performance.
 
-##
+---
+
+## License
+
+MIT License – free to use and modify.

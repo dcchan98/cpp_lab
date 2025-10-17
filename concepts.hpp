@@ -1,7 +1,6 @@
 #pragma once
-#include <iostream>
-#include <vector>
 #include <concepts>
+#include <ostream>
 
 namespace print_concepts {
     template<typename T>
