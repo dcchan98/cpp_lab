@@ -5,10 +5,14 @@
 
 // cpprint library
 #include "cpprint/print.hpp"
+#define print(x) \
+do { \
+std::cout << "Line " << __LINE__ << " : " << #x << " =============================================================\n"; \
+std::cout << generate_container_string_recursively(x) << "\n"; \
+std::cout << "=====================================================================================================\n"; \
+} while(0)
 
-#define print cpprint
-
-// ********************** Modify Code Below ***************************
+// ********************** Modify Code Below ***********************************************************************
 
 #include <bits/stdc++.h>
 
@@ -17,5 +21,5 @@ using namespace std;
 // Modify code below
 
 int main(){
-    print("Lets roll");
+    print("hello");
 }
