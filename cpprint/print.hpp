@@ -2,73 +2,81 @@
 #include "concepts.hpp"
 #include <iostream>
 #include <string>
+#include <sstream>
 
 template<typename T>
-void generate_container_string_recursively(const T &x, int indent = 0) {
+string generate_container_string_recursively(const T &x, int indent = 0) {
     using namespace std;
     using namespace print_concepts;
+    stringstream ss;
     if constexpr (Streamable<T>) {
-        cout << x;
+        ss << x;
+        return ss.str();
     }
     // TODO improve indentation if tuple contains containers or maps
     else if constexpr (TupleLike<T>) {
-        cout << "(";
+        ss << "(";
         std::apply(
-            [&](auto &&... args) {
-                // fold expression to print each element recursively
+            [&](auto&&... args) {
                 size_t n = 0;
-                ((generate_container_string_recursively(args), ++n < sizeof...(args) ? cout << ", " : cout), ...);
+                ((ss << generate_container_string_recursively(args)
+                     << (++n < sizeof...(args) ? ", " : "")), ...);
             },
             x);
-        cout << ")";
+        ss << ")";
+        return ss.str();
     }
     else if constexpr (MapContainer<T>) {
-        cout << string(indent , ' ');
-        std::cout << "{" << std::endl;
+        ss << string(indent, ' ');
+        ss << "{\n";
         for (auto it = x.begin(); it != x.end(); ++it) {
-            cout << string(indent + 2, ' ');
-            generate_container_string_recursively(it->first, indent + 2);
-            std::cout << ": ";
-            generate_container_string_recursively(it->second, indent + 2);
-            std::cout << std::endl;
+            ss << string(indent + 2, ' ');
+            ss << generate_container_string_recursively(it->first, indent + 2);
+            ss << ": ";
+            ss << generate_container_string_recursively(it->second, indent + 2);
+            ss << "\n";
         }
-        cout << string(indent , ' ');
-        std::cout << "}";
+        cout << string(indent, ' ');
+        ss << "}";
+        return ss.str();
     }
-    else if constexpr(Container1D<T>) {
-       cout << string(indent , ' ');
-       cout << "[ " ;
-       for (auto elem: x) {
-           generate_container_string_recursively(elem);
-           cout <<" ";
-       }
-        cout << " ]";
+    else if constexpr (Container1D<T>) {
+        ss << string(indent, ' ');
+        ss << "[ ";
+        for (auto elem: x) {
+            ss << generate_container_string_recursively(elem);
+            ss << " ";
+        }
+        ss << " ]";
+        return ss.str();
     }
     else if constexpr (Container<T>) {
-        cout << string(indent , ' ');
-        cout << "[ "<<endl;
+        ss << string(indent, ' ');
+        ss << "[\n";
         for (auto it = x.begin(); it != x.end(); ++it) {
-            generate_container_string_recursively(*it,indent+2);
-            cout << endl;
+            ss << generate_container_string_recursively(*it, indent + 2) << "\n";
         }
-        cout << "]";
+        ss << "]";
+        return ss.str();
     }
     else if constexpr (Adaptor<T>) {
         T copy = x;
-        std::cout << string(indent, ' ') << "priority_queue#[ ";
+        ss << string(indent, ' ') << "priority_queue#[ ";
         while (!copy.empty()) {
-            generate_container_string_recursively(copy.top(), indent + 2);
+            ss << generate_container_string_recursively(copy.top(), indent + 2);
             copy.pop();
-            if (!copy.empty()) std::cout << ", ";
+            if (!copy.empty()) ss << ", ";
         }
-        std::cout << " ]";
+        ss << " ]";
+        return ss.str();
     }
     else {
-        std::cout << "Unstreamable";
+        return "Unstreamable";
     }
 }
 
-#define cpprint(x)                                            \
-    std::cout << #x << " : Line " << __LINE__ << std::endl; \
-    generate_container_string_recursively(x);                                   \
-    std::cout << std::endl;
+template <typename T>
+void cpprint(T x) {
+  cout << generate_container_string_recursively(x) << endl;
+}
+
