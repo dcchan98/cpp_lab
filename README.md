@@ -13,8 +13,7 @@ for (int v : myVec) std::cout << v << std::endl;
 `cpprint` solves this problem. Now I can just:
 
 ```cpp
-std::vector<int> v = {1,2,3,4};
-cpprint::pprint(v);
+pprint(myVec);
 ```
 
 …and instantly see the contents, beautifully formatted, without breaking my concentration.
