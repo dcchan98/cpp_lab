@@ -67,11 +67,13 @@ namespace print_concepts {
 }
 
 
+#include <algorithm>
 #include <iostream>
 #include <ostream>
-#include <string>
 #include <sstream>
+#include <string>
 #include <tuple>
+
 
 namespace cpprint {
     template<typename T>
@@ -144,9 +146,18 @@ namespace cpprint {
         }
     }
 
-    template <typename T>
-    void pprint(T x) {
-      std::cout << generate_container_string_recursively(x) << std::endl;
+    template<typename... Args>
+    void pprint(const Args &... args) { ((std::cout << generate_container_string_recursively(args) << "\n"), ...); }
+
+    template<typename... Args>
+    void pprint_inline(const Args&... args) {
+        auto flatten = [](const auto& obj) {
+            std::string s = generate_container_string_recursively(obj);
+            std::replace(s.begin(), s.end(), '\n', ' ');
+            return s;
+        };
+        ((std::cout << flatten(args) << " "), ...);
+        std::cout << std::endl;
     }
 }
 
